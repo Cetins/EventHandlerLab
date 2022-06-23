@@ -1,35 +1,41 @@
 document.addEventListener('DOMContentLoaded', () => {
-  //console.log('JavaScript loaded');
+  const newItemform = document.querySelector('#new-item-form');
+  newItemform.addEventListener('submit', handleNewItemFormSubmit);
 
-  const form = document.querySelector('#new-item-form')
-  form.addEventListener('submit', handleFormSubmit)
-
-  const button = document.querySelector('#button'); // get the 
-  button.addEventListener('click', handleButtonClick);
+  const deleteAllButton = document.querySelector('#delete-all');
+  deleteAllButton.addEventListener('click', handleDeleteAllClick);
 })
 
-
-
-const handleFormSubmit = function (event) {
+const handleNewItemFormSubmit = function (event) {
   event.preventDefault();
 
-  const list = document.querySelector("#reading-list");
+  const readingListItem = createReadingListItem(event.target);
+  const readingList = document.querySelector('#reading-list');
+  readingList.appendChild(readingListItem);
 
-  const titleToPrint = document.createElement('li');
-
-  titleToPrint.textContent = `${event.target.title.value} \n ${event.target.author.value} \n ${event.target.category.value}`;
-
-  console.log(titleToPrint);
-
-  list.appendChild(titleToPrint);
-
-  document.getElementById('new-item-form').reset();
-
+  event.target.reset();
 }
 
-const handleButtonClick = function (event) {
-  const items = document.querySelectorAll('li');
-  for (var item of items) {
-    item.remove();
-  }
+const createReadingListItem = function (form) {
+  const readingListItem = document.createElement('li');
+  readingListItem.classList.add('reading-list-item');
+
+  const title = document.createElement('h2');
+  title.textContent = form.title.value;
+  readingListItem.appendChild(title);
+
+  const author = document.createElement('h3');
+  author.textContent = form.author.value;
+  readingListItem.appendChild(author);
+
+  const category = document.createElement('p');
+  category.textContent = form.category.value;
+  readingListItem.appendChild(category);
+
+  return readingListItem;
+}
+
+const handleDeleteAllClick = function (event) {
+  const readingList = document.querySelector('#reading-list');
+  readingList.innerHTML = '';
 }
